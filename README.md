@@ -16,6 +16,6 @@ name
 ```
  
 the process to build is :
-  make build => build the image
-  make run => interactive test which launch /bin/bash
-  make clean => remove the image and the container
+ * make build => build the image
+ * make run => interactive test which launch /bin/bash
+ * make clean => remove the image and the container
