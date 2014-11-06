@@ -1,6 +1,6 @@
 NAMESPACE=dguenault
 NAME=centos6_supervisord
-VERSION=6.6
+VERSION=6.5
 RELEASE=1
 
 clean:
