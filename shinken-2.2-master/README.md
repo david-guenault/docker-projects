@@ -19,7 +19,7 @@
 You can customize some settings before building. Edit the Makefile and change the following values
 
 - NAMESPACE = dguenault
-- NAME = shinkenl
+- NAME = shinken
 - VERSION = 2.2
 - RELEASE = master
 - BROWSER = /usr/bin/google-chrome
@@ -32,3 +32,5 @@ NAMESPACE NAME VERSION RELEASE are used to give a name to the image and the cont
 BROWSER is just the path to your webrowser. 
 
 ## Docker Image
+
+Automated build are available on docker hub registry : https://registry.hub.docker.com/u/dguenault/shinken-master/
