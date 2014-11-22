@@ -12,7 +12,7 @@
 - Stop the container : make stop
 - Start again : make start
 - Display container ip : make ip
-- Enter container : make enter (caution this use sudo with nsenter so you will need to install nsenter and sudo before)
+- Enter container : make enter (caution this use sudo with nsenter so you will need to install nsenter and sudo before. See : https://github.com/jpetazzo/nsenter)
 
 ## Customization
 
