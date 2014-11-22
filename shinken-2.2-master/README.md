@@ -30,3 +30,5 @@ NAMESPACE NAME VERSION RELEASE are used to give a name to the image and the cont
 - container name = $(NAME):$(VERSION)-$(RELEASE)
 
 BROWSER is just the path to your webrowser. 
+
+## Docker Image
