@@ -4,7 +4,7 @@
 <img src="https://raw.githubusercontent.com/docker-library/docs/master/centos/logo.png" height="250px">
 <img src="http://blog.docker.com/wp-content/uploads/2013/06/Docker-logo-011.png" height="250px">
 
-- This is a simple way to create a shinken docker image from shinken master branch. Usefull for testing but not for production use. This is just shinken without any additional module or configuration pack (except nagios-plugins-all)
+This is a simple way to create a shinken docker image from shinken master branch. Usefull for testing but not for production use. This is just shinken without any additional module or configuration pack (except nagios-plugins-all)
 
 - Source image : centos:centos6
 - Additional repo : epel6
