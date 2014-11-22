@@ -16,7 +16,7 @@
 
 ## Customization
 
-You can customize somme settings before building. Edite the Makefile and change the following values
+You can customize some settings before building. Edit the Makefile and change the following values
 
 - NAMESPACE = dguenault
 - NAME = shinkenl
