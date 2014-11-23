@@ -5,6 +5,7 @@ SHINKENIMG = dguenault/shinken:master-logstash
 ELKNAME = elk
 AMBASSADORNAME = elk_ambassador
 SHINKENNAME = shinken
+BROWSER = /usr/bin/google-chrome
 
 pull:
 	- $(DOCKER) pull $(SHINKENIMG) 
@@ -33,3 +34,15 @@ clean: stop
 	- $(DOCKER) rmi $(ELKIMG) 
 	- $(DOCKER) rmi $(SHINKENIMG)
 	- $(DOCKER) rmi $(AMBASSADORIMG) 
+
+kibana:
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(ELKNAME))/kibana
+
+elastichq:
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(ELKNAME)):9200/_plugin/HQ
+
+entershinken:
+	sudo ./go.sh $(SHINKENNAME)
+
+enterelk:
+	sudo ./go.sh $(ELKNAME)
