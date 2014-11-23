@@ -1,33 +1,32 @@
 NAMESPACE=dguenault
 NAME=shinken
-VERSION=master
-RELEASE=logstash
+RUNNAME=shinken
+TAG=master-logstash
 BROWSER=/usr/bin/google-chrome
 
 clean:
-	- docker rm $(NAME)-$(VERSION)-$(RELEASE)
-	- docker rmi $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE)
+	- docker rm $(RUNNAME)
+	- docker rmi $(NAMESPACE)/$(NAME):$(TAG)
 	- docker rmi $$(docker images |grep "none" |awk '{print $3'})
 
 build:
-	docker pull svendowideit/ambassador 
-	docker build --force-rm -t $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE) .
+	docker build --force-rm -t $(NAMESPACE)/$(NAME):$(TAG) .
 
 run:
-	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(NAME)-$(VERSION)-$(RELEASE) $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE) > /dev/null 2>&1 &)
+	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(RUNNAME) $(NAMESPACE)/$(NAME):$(VERSION) > /dev/null 2>&1 &)
 
 start:
-	docker start $(NAME)-$(VERSION)-$(RELEASE)
+	docker start $(RUNNAME)-$(TAG)
 
 stop:
-	docker stop $(NAME)-$(VERSION)-$(RELEASE)
+	docker stop $(RUNNAME)
 
 supervisor:
-	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)):9001
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)):9001
 	
 enter:
-	sudo ./go.sh $(NAME)-$(VERSION)-$(RELEASE)
+	sudo ./go.sh $(RUNNAME)
 
 ip:
-	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)
+	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)
 
