@@ -13,7 +13,7 @@ RUN     yum -y install openssh-server python-pycurl python-pip python-setuptools
 # install shinken
 RUN	adduser shinken
 RUN	cd /home/shinken && git clone https://github.com/naparuba/shinken.git
-RUN	cd /home/shinken/shinken && git checkout tags/2.0.3
+RUN	cd /home/shinken/shinken && git checkout 2.0.3
 RUN     cd /home/shinken/shinken && python setup.py install
 
 # create folders
