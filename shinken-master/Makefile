@@ -1,7 +1,7 @@
 NAMESPACE = dguenault
 NAME = shinken
 VERSION = master 
-RELEASE = 1 
+RELEASE = 1
 BROWSER = /usr/bin/google-chrome
 
 clean:
