@@ -32,6 +32,12 @@ stop:
 supervisor:
 	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)):9001
 	
+kibana:
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE))/kibana
+
+elastichq:
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)):9200/_plugin/HQ
+
 enter:
 	sudo ./go.sh $(NAME)-$(VERSION)-$(RELEASE)
 

@@ -12,7 +12,7 @@ ADD	files/repos/elasticsearch.repo /etc/yum.repos.d/
 ADD	files/repos/logstash.repo /etc/yum.repos.d/
 
 # prerequisites
-RUN     yum -y install vim-enhanced httpd elasticsearch java-1.7.0-openjdk python-pip redis logstash
+RUN     yum -y install vim-enhanced httpd elasticsearch java-1.7.0-openjdk python-pip redis logstash wget tar
 
 # install supervisor and configuration 
 RUN     pip install supervisor
@@ -22,6 +22,7 @@ ADD     files/supervisor/supervisord.conf /etc/supervisord.conf
 ADD     files/supervisor/logstash.conf /etc/supervisord.d/
 ADD     files/supervisor/redis.conf /etc/supervisord.d/
 ADD     files/supervisor/elasticsearch.conf /etc/supervisord.d/
+ADD     files/supervisor/httpd.conf /etc/supervisord.d/
 
 # redis
 RUN	sed -i "s/^\(bind.*\)/#\1/g" /etc/redis.conf
@@ -37,7 +38,14 @@ RUN	sed -i "s/^#node\.name.*/node.name: \"node1\"/g" /etc/elasticsearch/elastics
 # elastichq
 RUN	cd /usr/share/elasticsearch/bin && ./plugin -install royrusso/elasticsearch-HQ
 
+# kibana 
+RUN 	wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz
+RUN	tar zxvf kibana-3.1.2.tar.gz
+RUN	mv kibana-3.1.2 /var/www/html/kibana	
+RUN	chown -R apache:apache /var/www/html/kibana
+RUN	sed -i "s/^\(apache.*:\)\(\/sbin\/nologin\)/\1\/bin\/bash/g" /etc/passwd
 # Expose needed tcp ports
+
 EXPOSE  9200
 EXPOSE  9300
 EXPOSE  6379
