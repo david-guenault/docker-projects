@@ -1,29 +1,35 @@
 DOCKER = /usr/bin/docker
+ELKIMG = dguenault/elk:latest
+AMBASSADORIMG = svendowideit/ambassador
+SHINKENIMG = dguenault/shinken:master-logstash
+ELKNAME = elk
+AMBASSADORNAME = elk_ambassador
+SHINKENNAME = shinken
 
 pull:
-	- $(DOCKER) pull dguenault/shinken:logstash
-	- $(DOCKER) pull dguenault/elk:1.0-beta
-	- $(DOCKER) pull svendowideit/ambassador	
+	- $(DOCKER) pull $(SHINKENIMG) 
+	- $(DOCKER) pull $(ELKIMG) 
+	- $(DOCKER) pull $(AMBASSADOR)	
 
 init:
-	- $(DOCKER) run -d --name elk dguenault/elk:1.0-beta 
-	- $(DOCKER) run -d --name elk_ambassador --link elk:elk -p 6379:6379 svendowideit/ambassador  
-	- $(DOCKER) run -d --name shinken --link elk_ambassador:elk dguenault/shinken:master-logstash 
+	- $(DOCKER) run -d --name $(ELKNAME) $(ELKIMG) 
+	- $(DOCKER) run -d --name $(AMBASSADORNAME) --link $(ELKNAME):$(ELKNAME) -p 6379:6379 $(AMBASSADORIMG)  
+	- $(DOCKER) run -d --name $(SHINKENNAME) --link $(AMBASSADORNAME):$(ELKNAME) $(SHINKENIMG) 
 
 start:
-	- $(DOCKER) start elk
-	- $(DOCKER) start elk_ambassador
-	- $(DOCKER) start shinken
+	- $(DOCKER) start $(ELKNAME) 
+	- $(DOCKER) start $(AMBASSADORNAME) 
+	- $(DOCKER) start $(SHIKENNAME) 
 
 stop:
-	- $(DOCKER) stop shinken
-	- $(DOCKER) stop elk_ambassador
-	- $(DOCKER) stop elk
+	- $(DOCKER) stop $(SHINKENNAME) 
+	- $(DOCKER) stop $(AMBASSADORNAME) 
+	- $(DOCKER) stop $(ELKNAME) 
 
 clean: stop
-	- $(DOCKER) rm shinken
-	- $(DOCKER) rm elk_ambassador
-	- $(DOCKER) rm shinken 
-	- $(DOCKER) rmi dguenault/shinken:logstash
-	- $(DOCKER) rmi dguenault/elk:1.0-beta
-	- $(DOCKER) rmi svendowideit/ambassador	
+	- $(DOCKER) rm $(SHINKENNAME) 
+	- $(DOCKER) rm $(AMBASSADORNAME) 
+	- $(DOCKER) rm $(ELKNAME) 
+	- $(DOCKER) rmi $(ELKIMG) 
+	- $(DOCKER) rmi $(SHINKENIMG)
+	- $(DOCKER) rmi $(AMBASSADORIMG) 
