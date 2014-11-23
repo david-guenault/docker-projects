@@ -16,16 +16,16 @@ run:
 	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(RUNNAME) $(NAMESPACE)/$(NAME):$(TAG) > /dev/null 2>&1 &)
 
 start:
-	docker start $(NAME)
+	docker start $(RUNNAME)
 
 stop:
-	docker stop $(NAME)
+	docker stop $(RUNNAME)
 
 supervisor:
-	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)):9001
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)):9001
 	
 enter:
-	sudo ./go.sh $(NAME)
+	sudo ./go.sh $(RUNNAME)
 
 ip:
-	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)
+	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)
