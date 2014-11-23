@@ -1,45 +1,45 @@
 NAMESPACE = dguenault
 NAME = elk
-VERSION = 1.0
-RELEASE = beta
+RUNNAME = elk 
+TAG = latest
 BROWSER = /usr/bin/google-chrome
 
 clean: containerclean imageclean
 
 imageclean:
-	- docker rmi $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE)
+	- docker rmi $(NAMESPACE)/$(NAME):$(TAG)
 	- docker rmi $$(docker images |grep "none" |awk '{print $3'})
 
 containerclean:
-	- docker stop $(NAME)-$(VERSION)-$(RELEASE)
-	- docker rm $(NAME)-$(VERSION)-$(RELEASE)
+	- docker stop $(RUNNAME)
+	- docker rm $(RUNNAME)
 
 build: 
-	docker build --force-rm -t $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE) .
+	docker build --force-rm -t $(NAMESPACE)/$(NAME):$(TAG) .
 
 run:
-	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(NAME)-$(VERSION)-$(RELEASE) $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE) > /dev/null 2>&1 &)
+	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(RUNNAME) $(NAMESPACE)/$(NAME):$(TAG) > /dev/null 2>&1 &)
 
 interactive:
-	docker run -ti --rm -v /etc/localtime:/etc/localtime:ro --name $(NAME)-$(VERSION)-$(RELEASE) $(NAMESPACE)/$(NAME):$(VERSION)-$(RELEASE) /bin/bash
+	docker run -ti --rm -v /etc/localtime:/etc/localtime:ro --name $(RUNNAME) $(NAMESPACE)/$(NAME):$(TAG) /bin/bash
 
 start:
-	docker start $(NAME)-$(VERSION)-$(RELEASE)
+	docker start $(RUNNAME)
 
 stop:
-	docker stop $(NAME)-$(VERSION)-$(RELEASE)
+	docker stop $(RUNNAME)
 
 supervisor:
-	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)):9001
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)):9001
 	
 kibana:
-	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE))/kibana
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME))/kibana
 
 elastichq:
-	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)):9200/_plugin/HQ
+	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)):9200/_plugin/HQ
 
 enter:
-	sudo ./go.sh $(NAME)-$(VERSION)-$(RELEASE)
+	sudo ./go.sh $(RUNNAME)
 
 ip:
-	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(NAME)-$(VERSION)-$(RELEASE)
+	docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)
