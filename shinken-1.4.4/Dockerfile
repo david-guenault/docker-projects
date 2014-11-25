@@ -17,7 +17,7 @@ RUN	cd /home/shinken/shinken && git checkout tags/1.4.4
 RUN     cd /home/shinken/shinken && python setup.py install
 
 # create folders
-RUN     mkdir -p /var/run/shinken /var/log/shinken
+RUN     mkdir -p /var/run/shinken /var/log/shinken /usr/local/shinken/var/archives
 RUN     chown shinken:shinken /var/run/shinken /var/log/shinken /home/shinken/shinken
 
 # install supervisor and configuration 
