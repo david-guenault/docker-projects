@@ -8,7 +8,7 @@ MAINTAINER	David GUENAULT
 RUN     yum -y install http://mirrors.ircam.fr/pub/fedora/epel/6/i386/epel-release-6-8.noarch.rpm
 
 # prerequisites
-RUN     yum -y install openssh-server python-pycurl python-pip python-setuptools git vim-enhanced python-paramiko nagios-plugins-all sysstat wget curl python-pyro
+RUN     yum -y install openssh-server python-pycurl python-pip python-setuptools git vim-enhanced python-paramiko nagios-plugins-all sysstat wget curl python-pyro python-ldap python-pymongo python-sqlite2
 
 # install shinken
 RUN	adduser shinken
@@ -18,7 +18,10 @@ RUN     cd /home/shinken/shinken && python setup.py install
 
 # create folders
 RUN     mkdir -p /var/run/shinken /var/log/shinken /usr/local/shinken/var/archives
-RUN     chown shinken:shinken /var/run/shinken /var/log/shinken /home/shinken/shinken
+RUN     chown -R shinken:shinken /etc/shinken /var/run/shinken /var/log/shinken /var/lib/shinken /home/shinken/shinken /usr/local/shinken
+
+# fix some configurations issues
+RUN	sed -i "s/\(\s\+modules\s\+\)\(Livestatus.*\)$/\1/g" /etc/shinken/shinken-specific.cfg
 
 # install supervisor and configuration 
 RUN     pip install supervisor
