@@ -8,7 +8,7 @@ MAINTAINER	David GUENAULT
 RUN     yum -y install http://mirrors.ircam.fr/pub/fedora/epel/6/i386/epel-release-6-8.noarch.rpm
 
 # prerequisites
-RUN     yum -y install openssh-server python-pycurl python-pip python-setuptools git vim-enhanced python-paramiko nagios-plugins-all sysstat wget curl python-pyro python-ldap python-pymongo python-sqlite2
+RUN     yum -y install openssh-server python-pycurl python-pip python-setuptools git vim-enhanced python-paramiko nagios-plugins-all sysstat wget curl python-pyro python-ldap python-pymongo python-sqlite2 mailx
 
 # install shinken
 RUN	adduser shinken
@@ -22,6 +22,9 @@ RUN     chown -R shinken:shinken /etc/shinken /var/run/shinken /var/log/shinken 
 
 # fix some configurations issues
 RUN	sed -i "s/\(\s\+modules\s\+\)\(Livestatus.*\)$/\1/g" /etc/shinken/shinken-specific.cfg
+RUN	sed -i "s/^\(log_level=\)\(.*\)/\1DEBUG/g" /etc/shinken/*.ini
+RUN	sed -i "s/^pack_distribution_file=.*$/pack_distribution_file=\/var\/run\/shinken\/pack_distribution.dat/g" /etc/shinken/nagios.cfg
+RUN	ln -s /bin/mail /usr/bin/mail
 
 # install supervisor and configuration 
 RUN     pip install supervisor
