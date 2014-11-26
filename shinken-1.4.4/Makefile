@@ -4,22 +4,26 @@ RUNNAME=shinken
 TAG=1.4.4
 BROWSER=/usr/bin/google-chrome
 
-clean:
-	- docker rm $(RUNNAME)
+clean: stop cleancontainer cleanimage
+
+cleanimage:
 	- docker rmi $(NAMESPACE)/$(NAME):$(TAG)
 	- docker rmi $$(docker images |grep "none" |awk '{print $3'})
 
-build: 
+cleancontainer:
+	- docker rm $(RUNNAME)
+
+build: cleanimage 
 	docker build --force-rm -t $(NAMESPACE)/$(NAME):$(TAG) .
 
-run:
+run: stop cleancontainer
 	JOB=$$(docker run -v /etc/localtime:/etc/localtime:ro --name $(RUNNAME) $(NAMESPACE)/$(NAME):$(TAG) > /dev/null 2>&1 &)
 
 start:
-	docker start $(RUNNAME)
+	- docker start $(RUNNAME)
 
 stop:
-	docker stop $(RUNNAME)
+	- docker stop $(RUNNAME)
 
 supervisor:
 	$(BROWSER) http://$$(docker inspect --format='{{.NetworkSettings.IPAddress}}' $(RUNNAME)):9001
