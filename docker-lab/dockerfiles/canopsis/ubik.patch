@@ -1,0 +1,26 @@
+From 0ed211610cd4d7245b88c3d49de06b17d0d41b9e Mon Sep 17 00:00:00 2001
+From: David GUENAULT <david.guenault@gmail.com>
+Date: Mon, 1 Dec 2014 10:44:38 +0000
+Subject: [PATCH 1/1] downgrade progressbar version to 2.2
+
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index d64f5c7..cadc50c 100755
+--- a/setup.py
++++ b/setup.py
+@@ -44,7 +44,7 @@ setup(
+     keywords='ubik package linux unix',
+     packages=['ubik','ubik_toolbelt','ubik_toolbelt.contrib'],
+     scripts=['scripts/ubik', 'scripts/echo_ubik_conf', 'scripts/ubik-package', 'scripts/ubik-repo', 'scripts/ubik-web'],
+-    install_requires=['progressbar==2.3', 'requests==1.1.0', 'docopt==0.5.0', 'isit==0.3'],
++    install_requires=['progressbar==2.2', 'requests==1.1.0', 'docopt==0.5.0', 'isit==0.3'],
+     classifiers=[
+         'Intended Audience :: Developers',
+         'Natural Language :: English',
+-- 
+1.9.1
+
+

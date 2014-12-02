@@ -1,0 +1,44 @@
+# vim: tabstop=4 shiftwidth=4 expandtab
+skydns:
+    image: crosbymichael/skydns:latest
+    name: skydns
+    hostname: skydns
+    ports:
+        - "172.17.42.1:53:53/udp"
+    command: -nameserver 10.10.0.1:53 -domain box4prod.lan  
+
+
+skydoc:
+    image: crosbymichael/skydock:latest
+    name: skydoc
+    volumes:
+        - /var/run/docker.sock:/docker.sock
+    command: -ttl 30 -environment NOC -s /docker.sock -plugins /plugins/containerEnv.js -domain skydns
+    links:
+        - skydns:skydns
+
+node1:
+    image: centos:centos6 
+    name: node1
+    hostname: node1
+    links:
+        - skydns:skydns
+    environment:
+        - DNS_INSTANCE=node1
+        - LOCALDOMAIN=shinken-central.noc.box4prod.lan shinken-poller.noc.box4prod.lan noc.box4prod.lan box4prod.lan centos.noc.box4prod.lan
+    dns:
+        - 172.17.42.1
+    command: ping skydns
+
+node2:
+    image: centos:centos6 
+    name: node2
+    hostname: node2
+    links:
+        - skydns:skydns
+    environment:
+        - DNS_INSTANCE=node2
+        - LOCALDOMAIN=shinken-central.noc.box4prod.lan shinken-poller.noc.box4prod.lan noc.box4prod.lan box4prod.lan centos.noc.box4prod.lan
+    dns:
+        - 172.17.42.1
+    command: ping node1 

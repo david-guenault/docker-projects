@@ -1,0 +1,44 @@
+# vim: tabstop=4 shiftwidth=4 expandtab
+skydns:
+    image: crosbymichael/skydns:latest
+    name: skydns
+    hostname: skydns
+    ports:
+        - "172.17.42.1:53:53/udp"
+    command: -nameserver 10.10.0.1:53 -domain box4prod.lan  
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+
+skydoc:
+    image: crosbymichael/skydock:latest
+    name: skydoc
+    volumes:
+        - /var/run/docker.sock:/docker.sock
+        - /etc/localtime:/etc/localtime:ro
+    command: -ttl 30 -environment NOC -s /docker.sock -plugins /plugins/containerEnv.js -domain skydns
+    links:
+        - skydns:skydns
+
+shinken:
+    image: dguenault/shinken-all:2.0.3
+    name: shinken
+    hostname: shinken
+    environment:
+        - DNS_INSTANCE=shinken
+        - LOCALDOMAIN=shinken-all.noc.box4prod.lan thruk.noc.box4prod.lan
+    dns:
+        - 172.17.42.1
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
+
+thruk:
+    image: dguenault/thruk:latest
+    name: thruk
+    hostname: thruk
+    environment:
+        - DNS_INSTANCE=thruk
+        - LOCALDOMAIN=shinken-all.noc.box4prod.lan thruk.noc.box4prod.lan
+    dns:
+        - 172.17.42.1
+    volumes:
+        - /etc/localtime:/etc/localtime:ro
